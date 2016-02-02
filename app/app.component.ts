@@ -1,22 +1,33 @@
 import {Component, OnInit} from 'angular2/core';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
+
 import {Hero} from './hero';
 import {HeroDetailComponent} from './hero-detail.component';
 import {HeroService} from './hero.service';
 
 @Component({
   selector: 'my-app',
-  providers: [HeroService],
-  directives: [HeroDetailComponent],
-  template: `
-    <h1>{{title}}</h1>
-    <h2>My Heroes</h2>
-    <ul class="heroes">
-      <li *ngFor="#hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-      </li>
-    </ul>
-    <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+  providers: [HeroService, ROUTER_PROVIDERS],
+  directives: [HeroDetailComponent, ROUTER_DIRECTIVES],
+  template:
+    `
+    <h1>Component Router</h1>
+    <nav>
+      <a [routerLink]="['HeroDetail', { id: 4 }]">Heroes</a>
+    </nav>
+    <router-outlet></router-outlet>
     `,
+      // <a [routerLink]="['CrisisCenter']">Crisis Center</a>
+  // `
+  //   <h1>{{title}}</h1>
+  //   <h2>My Heroes</h2>
+  //   <ul class="heroes">
+  //     <li *ngFor="#hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
+  //       <span class="badge">{{hero.id}}</span> {{hero.name}}
+  //     </li>
+  //   </ul>
+  //   <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+  //   `,
   styles: [`
     .selected {
       background-color: #CFD8DC !important;
@@ -66,6 +77,11 @@ import {HeroService} from './hero.service';
     }
   `]
 })
+@RouteConfig([
+  // { path: '/crisis-center', name: 'CrisisCenter', component: CrisisListComponent },
+  // { path: '/heroes', name: 'Heroes', component: HeroListComponent },
+  { path: '/hero/:id', name: 'HeroDetail', component: HeroDetailComponent }
+])
 export class AppComponent implements OnInit {
   public title = 'Tour of Heroes';
   public selectedHero: Hero;
